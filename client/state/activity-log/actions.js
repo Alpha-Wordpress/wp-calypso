@@ -340,6 +340,7 @@ export const setFilter =
 export const updateFilter =
 	( siteId, filter, skipUrlUpdate = false ) =>
 	( dispatch, getState ) => {
+		console.log( 'updating filter' );
 		dispatch( { type: ACTIVITY_LOG_FILTER_UPDATE, siteId, filter } );
 		if ( ! skipUrlUpdate ) {
 			navigateToFilter( getActivityLogFilter( getState(), siteId ) );

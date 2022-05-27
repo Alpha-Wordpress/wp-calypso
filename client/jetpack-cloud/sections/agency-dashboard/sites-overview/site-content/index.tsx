@@ -1,17 +1,21 @@
 import { useTranslate } from 'i18n-calypso';
 import JetpackLogo from 'calypso/components/jetpack-logo';
 import useFetchDashboardSites from 'calypso/data/agency-dashboard/use-fetch-dashboard-sites';
+import { getFilter } from 'calypso/state/jetpack-agency-dashboard/selectors/get-filter';
+import Filterbar from 'calypso/my-sites/activity/filterbar';
 import SiteCard from '../site-card';
 import SiteTable from '../site-table';
 import { formatSites } from '../utils';
 import type { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 
 import './style.scss';
 
 export default function SiteContent(): ReactElement {
 	const translate = useTranslate();
 
-	const { data, error, isLoading } = useFetchDashboardSites();
+	const filter = useSelector( ( state ) => getFilter( state ) );
+	const { data, error, isLoading } = useFetchDashboardSites( filter );
 
 	const sites = formatSites( data );
 
@@ -42,8 +46,18 @@ export default function SiteContent(): ReactElement {
 		return <div className="site-content__no-sites">{ translate( 'No active sites' ) }</div>;
 	}
 
+	const selectActionType = () => {};
+
+	// TODO: add filter param to filterbar, update selectActionType
 	return (
 		<>
+			<Filterbar
+				selectorTypes={ { issueType: true } }
+				filter={ filter }
+				isLoading={ isLoading }
+				isVisible={ true }
+				selectActionType={ selectActionType }
+			/>
 			<SiteTable isFetching={ isLoading } columns={ columns } items={ sites } />
 			<div className="site-content__mobile-view">
 				<>
