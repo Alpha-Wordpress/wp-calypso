@@ -7,6 +7,7 @@ import { useFSEStatus } from '../hooks/use-fse-status';
 import { useSite } from '../hooks/use-site';
 import { useSiteIdParam } from '../hooks/use-site-id-param';
 import { useSiteSlugParam } from '../hooks/use-site-slug-param';
+import { useCanUserManageOptions } from '../hooks/use-user-can-manage-options';
 import { ONBOARD_STORE, SITE_STORE, USER_STORE } from '../stores';
 import { recordSubmitStep } from './internals/analytics/record-submit-step';
 import { ProcessingResult } from './internals/steps-repository/processing-step';
@@ -358,6 +359,13 @@ export const siteSetupFlow: Flow = {
 
 		if ( ! siteSlug && ! siteId ) {
 			throw new Error( 'site-setup did not provide the site slug or site id it is configured to.' );
+		}
+		const canManageOptions = useCanUserManageOptions();
+		if ( ! canManageOptions ) {
+			redirect( '/start' );
+			throw new Error(
+				'site-setup the user needs to have the manage_options capability to go through the flow.'
+			);
 		}
 	},
 };
