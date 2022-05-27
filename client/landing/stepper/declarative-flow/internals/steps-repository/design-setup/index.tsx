@@ -398,6 +398,7 @@ const designSetup: Step = function DesignSetup( { navigation, flow } ) {
 					verticalId={ siteVerticalId }
 					isSelected={ design.slug === selectedGeneratedDesign?.slug }
 					isPrivateAtomic={ isPrivateAtomic }
+					isStickyToolbar={ isSticky }
 					recordTracksEvent={ recordTracksEvent }
 				/>
 			) ) }
