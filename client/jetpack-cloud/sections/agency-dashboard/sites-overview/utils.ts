@@ -2,6 +2,8 @@ import { translate } from 'i18n-calypso';
 import type { AllowedTypes, SiteData, FormattedRowObj } from './types';
 import type { ReactChild } from 'react';
 
+export const SITES_PER_PAGE = 1;
+
 /**
  * Returns link and tooltip for each feature based on status
  * which will be used to format row values. link will be used

@@ -10,12 +10,18 @@ import './style.scss';
 export default function SitesOverview(): ReactElement {
 	const translate = useTranslate();
 	const searchParam = new URLSearchParams( window.location.search ).get( 's' );
+	const pageParam = new URLSearchParams( window.location.search ).get( 'page' );
 
 	const [ searchQuery, setSearchQuery ] = useState( searchParam );
-	const { data, isError, isFetching } = useFetchDashboardSites( searchQuery );
+	const [ pageNumber, setPageNumber ] = useState( Number( pageParam ) );
+	const { data, isError, isFetching } = useFetchDashboardSites( searchQuery, pageNumber );
 
 	const handleSearch = ( query: string | null ) => {
 		setSearchQuery( query );
+	};
+
+	const handlePageChange = ( page: number ) => {
+		setPageNumber( page );
 	};
 
 	return (
@@ -28,9 +34,15 @@ export default function SitesOverview(): ReactElement {
 				</div>
 			</div>
 			<div className="sites-overview__search">
-				<SiteSearch searchQuery={ searchQuery } handleSearch={ handleSearch } />
+				<SiteSearch searchQuery={ searchParam } handleSearch={ handleSearch } />
 			</div>
-			<SiteContent data={ data } isError={ isError } isFetching={ isFetching } />
+			<SiteContent
+				data={ data }
+				isError={ isError }
+				isFetching={ isFetching }
+				currentPage={ pageNumber || 1 }
+				handlePageChange={ handlePageChange }
+			/>
 		</div>
 	);
 }
