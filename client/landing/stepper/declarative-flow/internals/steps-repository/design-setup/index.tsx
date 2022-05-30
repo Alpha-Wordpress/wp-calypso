@@ -73,11 +73,7 @@ const designSetup: Step = function DesignSetup( { navigation, flow } ) {
 
 	const showDesignPickerCategories =
 		isEnabled( 'signup/design-picker-categories' ) && ! isAnchorSite;
-	const showGeneratedDesigns =
-		isEnabled( 'signup/design-picker-generated-designs' ) &&
-		intent === 'build' &&
-		!! siteVerticalId &&
-		! isForceStaticDesigns;
+
 	const showDesignPickerCategoriesAllFilter = isEnabled( 'signup/design-picker-categories' );
 
 	const isPremiumThemeAvailable = Boolean(
@@ -97,6 +93,13 @@ const designSetup: Step = function DesignSetup( { navigation, flow } ) {
 
 	const { data: generatedDesigns = [], isLoading: isLoadingGeneratedDesigns } =
 		useStarterDesignsGeneratedQuery( { seed: siteSlug || undefined } );
+
+	const showGeneratedDesigns =
+		isEnabled( 'signup/design-picker-generated-designs' ) &&
+		intent === 'build' &&
+		!! siteVerticalId &&
+		generatedDesigns.length > 0 &&
+		! isForceStaticDesigns;
 
 	const selectedGeneratedDesign = useMemo(
 		() => selectedDesign ?? ( ! isMobile ? generatedDesigns[ 0 ] : undefined ),
